@@ -17,26 +17,26 @@ async function main(argv: string[]) {
     if (!args[0]) return console.log('hirsibuu <state> [invalid]')
 
     const words = await getWords()
-    const [solveState, invalidCharacters = ''] = args
+    const [wordState, knownInvalid = ''] = args
 
-    const prior = [...new Set(solveState.replace(/[\?\-\_\.\,\s]/g, '').split(''))].join('')
+    const appeared = [...new Set(wordState.replace(/[\?\-\_\.\,\s]/g, '').split(''))].join('')
 
     const invalid = [
         ...new Set(
-            solveState
+            wordState
                 .replace(/[\?\-\_\.\,\s]/g, '')
-                .concat(invalidCharacters)
+                .concat(knownInvalid)
                 .split('')
         )
     ].join('')
 
-    const regexp = new RegExp(`^${solveState.replace(/[\?\-\_\.\,\s]/g, `[^${invalid}]`)}$`)
+    const regexp = new RegExp(`^${wordState.replace(/[\?\-\_\.\,\s]/g, `[^${invalid}]`)}$`)
 
     const matches = words.filter((w) => regexp.test(w))
     const quantities: { [char: string]: number } = {}
 
     for (const [index, word] of matches.entries()) {
-        const unlisted = new Set(word.replace(new RegExp(`[${prior}]`, 'g'), '').split(''))
+        const unlisted = new Set(word.replace(new RegExp(`[${appeared}]`, 'g'), '').split(''))
 
         unlisted.forEach((c) => (c in quantities ? quantities[c]++ : (quantities[c] = 1)))
 
