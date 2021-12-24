@@ -1,4 +1,5 @@
 import fs from 'fs/promises'
+import path from 'path'
 
 let _words: string[]
 
@@ -7,7 +8,7 @@ const getWords = async () => {
         return _words
     }
 
-    const file = await fs.readFile('/Users/arttupennanen/Desktop/projects/word/words.txt', 'utf8')
+    const file = await fs.readFile(path.join(__dirname, '../assets/words.txt'), 'utf8')
     _words = file.split('\n')
     return _words
 }
