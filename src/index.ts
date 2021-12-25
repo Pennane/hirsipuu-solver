@@ -105,19 +105,28 @@ async function main(argv: string[]) {
         })
         .slice(0, 5)
 
-    for (const [c, a] of mostOccuring) {
-        const k = c as keyof typeof worth
+    // const highestPoints = Object.entries(occurrances)
+    //     .sort((a, b) => {
+    //         const bPoints = (quantities[b[0]] / b[1]) * worth[b[0] as keyof typeof worth] * (b[1] / matches.length)
+    //         const aPoints = (quantities[a[0]] / a[1]) * worth[a[0] as keyof typeof worth] * (a[1] / matches.length)
+    //         return bPoints - aPoints
+    //     })
+    //     .slice(0, 5)
+
+    for (const [character, occurance] of mostOccuring) {
+        const probability = occurance / matches.length
+        const pieces = quantities[character] / occurance
+        const points = pieces * worth[character as keyof typeof worth] * probability
+
         console.log(
-            c,
+            character,
             'in',
-            a,
+            occurance,
             'of',
             matches.length,
             'words',
-            `(${Math.round((a / matches.length) * 100)}%)`,
-            `(≈ ${(quantities[c] / a).toFixed(2)} pc or ≈ ${Math.round(
-                (quantities[c] / a) * (worth.hasOwnProperty(k) ? worth[k] : 1)
-            )} points)`
+            `(${Math.round(probability * 100)}%)`,
+            `(≈ ${points.toFixed(2)} points)`
         )
     }
 }
