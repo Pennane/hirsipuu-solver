@@ -114,6 +114,7 @@ async function main(argv: string[]) {
             'of',
             matches.length,
             'words',
+            `(${Math.round((a / matches.length) * 100)}%)`,
             `(≈ ${(quantities[c] / a).toFixed(2)} pc or ≈ ${Math.round(
                 (quantities[c] / a) * (worth.hasOwnProperty(k) ? worth[k] : 1)
             )} points)`
